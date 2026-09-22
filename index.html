@@ -46,6 +46,11 @@ body{
 .wrap{position:relative;z-index:1}
 .hero{margin:0 0 1.4rem}
 .hero svg{width:100%;max-width:23rem;height:auto;color:var(--ink);display:block}
+.fields{align-items:start}
+.fields.three{grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.1rem}
+@media (max-width:34rem){.fields.three{grid-template-columns:1fr 1fr}}
+.fields.three .hint{min-height:2.6em}
+.tune > .hint{margin-top:1rem}
 .wrap{max-width:46rem;margin:0 auto;
   padding:2.25rem 1.25rem calc(7rem + env(safe-area-inset-bottom,0px))}
 
@@ -81,24 +86,8 @@ input[type=range]{width:100%;accent-color:var(--focus);height:1.6rem}
 .tune > summary::before{content:"+";display:inline-block;width:1.1rem}
 .tune[open] > summary::before{content:"–"}
 .fastval{margin:1.2rem 0 .2rem;font-size:1.02rem;font-weight:600}
-.bars{display:flex;height:.7rem;border-radius:2px;overflow:hidden;margin:1.3rem 0 1.1rem;
-  background:var(--line)}
-.seg{display:block;transition:width .2s ease}
-.s1{background:var(--volt)} .s2{background:var(--ink-soft)} .s3{background:var(--ink)}
-.split{display:grid;gap:.9rem}
-.sl label{display:flex;align-items:center;gap:.5rem;font-size:.95rem;color:var(--ink-soft);
-  margin-bottom:.1rem}
-.sl label b{margin-left:auto;color:var(--ink);font-feature-settings:"tnum" 1}
-.sw{width:.75rem;height:.75rem;border-radius:2px;display:inline-block;flex:none}
-.split input[type=range]{height:1.3rem}
-@media (prefers-reduced-motion:reduce){.seg{transition:none}}
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr));gap:1rem 1.5rem}
 .fields.tight{margin-top:1.3rem}
-.fields{align-items:start}
-.fields.three{grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.1rem}
-@media (max-width:34rem){.fields.three{grid-template-columns:1fr 1fr}}
-.fields.three .hint{min-height:2.6em}
-.tune > .hint{margin-top:1rem}
 .field label{display:block;font-size:.9rem;color:var(--ink-soft);margin-bottom:.3rem}
 .field input{width:100%;font-family:inherit;font-size:1.05rem;color:var(--ink);
   background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:.5rem .6rem}
@@ -178,16 +167,12 @@ input:focus-visible,summary:focus-visible,button:focus-visible,a:focus-visible{
   <div class="hero">
     <svg viewBox="0 0 268 112" role="img" aria-label="Um carro elétrico ligado a um poste de carregamento">
       <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 100h256"/>
-        <path d="M14 100V34c0-6 4-10 10-10h12c6 0 10 4 10 10v66"/>
-        <path d="M21 36h18v16H21z"/>
-        <path d="M31 60l-5 9h8l-5 9"/>
-        <path d="M44 62c12 0 12 14 26 8"/>
-        <circle cx="76" cy="66" r="4.5"/>
+        <path d="M6 100h256"/><path d="M14 100V34c0-6 4-10 10-10h12c6 0 10 4 10 10v66"/>
+        <path d="M21 36h18v16H21z"/><path d="M31 60l-5 9h8l-5 9"/>
+        <path d="M44 62c12 0 12 14 26 8"/><circle cx="76" cy="66" r="4.5"/>
         <path d="M78 88V72c0-6 4-10 10-11l28-4 20-16c4-4 10-6 16-6h44c7 0 13 3 17 8l12 16 19 4c7 1 11 5 11 11v8"/>
         <circle cx="114" cy="88" r="12"/><circle cx="222" cy="88" r="12"/>
-        <path d="M126 88h84"/>
-        <path d="M142 54l12-14h36l11 14z"/>
+        <path d="M126 88h84"/><path d="M142 54l12-14h36l11 14z"/>
       </g>
     </svg>
   </div>
@@ -197,40 +182,32 @@ input:focus-visible,summary:focus-visible,button:focus-visible,a:focus-visible{
 
   <section class="step">
     <h2><i>1</i> Onde vais carregar?</h2>
-    <p class="sub">É o que mais pesa na conta — mais do que o consumo do carro ou o preço do combustível. Divide os teus quilómetros pelos três sítios; somam sempre cem.</p>
-    <div class="choices" id="presets">
-      <button type="button" data-split="90,5,5" aria-pressed="false">Quase tudo em casa</button>
-      <button type="button" data-split="75,15,10" aria-pressed="true">Casa e alguma rua</button>
-      <button type="button" data-split="60,10,30" aria-pressed="false">Casa e muita autoestrada</button>
-      <button type="button" data-split="0,45,55" aria-pressed="false">Não carrego em casa</button>
+    <p class="sub">É o que mais pesa na conta — mais do que o consumo do carro ou o preço do combustível.</p>
+    <div class="choices" id="choices">
+      <button type="button" data-home="0,00" data-share="80" aria-pressed="false">Casa, sem custo para mim</button>
+      <button type="button" data-home="0,12" data-share="80" aria-pressed="true">Casa, tarifa de vazio</button>
+      <button type="button" data-home="0,20" data-share="70" aria-pressed="false">Casa, tarifa simples</button>
+      <button type="button" data-home="0,45" data-share="0" aria-pressed="false">Não tenho onde carregar em casa</button>
     </div>
-
-    <div class="bars" id="bars" aria-hidden="true">
-      <span class="seg s1" id="segHome"></span><span class="seg s2" id="segSlow"></span><span class="seg s3" id="segFast"></span>
+    <p class="shareval" id="shareval">80% dos quilómetros em casa</p>
+    <input type="range" id="share" min="0" max="100" value="80" step="5" aria-label="Percentagem de quilómetros carregados em casa">
+    <div class="scale"><span>Tudo em carregadores públicos</span><span>Tudo em casa</span></div>
+    <h3 class="subhead">E quando não é em casa?</h3>
+    <p class="sub">Não precisas de saber a rede. O teu tipo de utilização chega.</p>
+    <div class="choices" id="profiles">
+      <button type="button" data-fast="10" aria-pressed="false">Cidade, supermercados e rua</button>
+      <button type="button" data-fast="40" aria-pressed="true">Um pouco de tudo</button>
+      <button type="button" data-fast="85" aria-pressed="false">Muita autoestrada</button>
     </div>
-
-    <div class="split">
-      <div class="sl">
-        <label for="shHome"><span class="sw s1"></span> Em casa <b id="vHome">75%</b></label>
-        <input type="range" id="shHome" min="0" max="100" step="5" value="75">
-      </div>
-      <div class="sl">
-        <label for="shSlow"><span class="sw s2"></span> Lento, fora de casa <b id="vSlow">15%</b></label>
-        <input type="range" id="shSlow" min="0" max="100" step="5" value="15">
-      </div>
-      <div class="sl">
-        <label for="shFast"><span class="sw s3"></span> Rápido <b id="vFast">10%</b></label>
-        <input type="range" id="shFast" min="0" max="100" step="5" value="10">
-      </div>
-    </div>
-
+    <p class="fastval" id="fastval">40% dos carregamentos fora de casa são em rápido</p>
+    <input type="range" id="fast" min="0" max="100" value="40" step="5" aria-label="Percentagem de carregamentos fora de casa feitos em rápido">
+    <div class="scale"><span>Tudo lento</span><span>Tudo rápido</span></div>
     <p class="blended" id="blended"></p>
-
     <details class="tune">
       <summary>Afinar os preços por kWh</summary>
       <div class="fields three">
         <div class="field"><label for="phome">Em casa</label><input id="phome" inputmode="decimal" value="0,12">
-          <p class="hint">Tarifa de vazio. Põe 0 se não pagas.</p></div>
+          <p class="hint">Tarifa de vazio.</p></div>
         <div class="field"><label for="pslow">Lento, fora de casa</label><input id="pslow" inputmode="decimal" value="0,50">
           <p class="hint">Postes de rua e parques, em AC.</p></div>
         <div class="field"><label for="pfast">Rápido</label><input id="pfast" inputmode="decimal" value="0,72">
@@ -290,8 +267,8 @@ input:focus-visible,summary:focus-visible,button:focus-visible,a:focus-visible{
     <h2>Este número é uma estimativa. O teu real pode ser outro.</h2>
     <p>Andei quatro meses a registar todos os carregamentos ao cêntimo. <span class="proof">Em junho fiz 2.387 km e poupei 2 €.</span> Em setembro, com os mesmos quilómetros e o mesmo carro, poupei 170 €. A diferença foi só onde carreguei — e nenhuma calculadora te diz isso à partida.</p>
     <p>Tenho uma folha de cálculo que faz as contas aos teus carregamentos reais: gasto por mês, preço médio por kWh, ranking dos sítios onde carregas e o limite acima do qual deixa de compensar. Custa 5 €.</p>
-    <p><a class="go" href="mailto:alexandro.ferreira95@gmail.com?subject=Quero%20a%20folha%20de%20c%C3%A1lculo&amp;body=Ol%C3%A1%2C%0A%0AQueria%20a%20folha%20de%20registo%20de%20carregamentos.%0A%0AComo%20controlo%20os%20meus%20custos%20hoje%3A%20">Pedir a folha por email</a></p>
-    <p class="small">Respondo eu, não é automático. Uso o teu email só para isto.</p>
+    <p><a class="go" href="https://ferreiravibe28.gumroad.com/l/carregamentosEV" target="_blank" rel="noopener">Obter a folha de cálculo — 5 €</a></p>
+    <p class="small">Descarregas logo a seguir à compra. Dúvidas antes de comprar? Escreve-me, respondo eu.</p>
   </section>
 
   <table>
@@ -303,7 +280,7 @@ input:focus-visible,summary:focus-visible,button:focus-visible,a:focus-visible{
   <footer>
     <p>Ficam de fora juros de financiamento, portagens, pneus e o custo de instalar um carregador em casa.</p>
     <p>Se não tens onde carregar em casa, põe a percentagem a zero antes de decidir. É o cenário que mais muda a resposta.</p>
-    <p>Para medir o teu custo real em vez de o estimar, <a href="mailto:alexandro.ferreira95@gmail.com?subject=Quero%20a%20folha%20de%20c%C3%A1lculo">pede-me a folha de registo</a>.</p>
+    <p>Para medir o teu custo real em vez de o estimar, há <a href="https://ferreiravibe28.gumroad.com/l/carregamentosEV" target="_blank" rel="noopener">a folha de registo</a>.</p>
   </footer>
 </div>
 
@@ -318,59 +295,32 @@ input:focus-visible,summary:focus-visible,button:focus-visible,a:focus-visible{
   var ids=["phome","pslow","pfast","km","cons","loss","lkm","fuel","sev","sice","mev","mice","iuc",
            "pev","pice","rev","rice"];
   var el={};ids.forEach(function(i){el[i]=document.getElementById(i);});
-  var sh={home:document.getElementById("shHome"),slow:document.getElementById("shSlow"),
-          fast:document.getElementById("shFast")};
-  var vv={home:document.getElementById("vHome"),slow:document.getElementById("vSlow"),
-          fast:document.getElementById("vFast")};
-  var seg={home:document.getElementById("segHome"),slow:document.getElementById("segSlow"),
-           fast:document.getElementById("segFast")};
-  var presets=document.getElementById("presets"),blended=document.getElementById("blended"),
-      depon=document.getElementById("depon"),depfields=document.getElementById("depfields"),
-      rows=document.getElementById("rows"),result=document.getElementById("result"),
-      state=document.getElementById("state"),delta=document.getElementById("delta"),
-      explain=document.getElementById("explain"),bar=document.getElementById("bar"),
-      barval=document.getElementById("barval"),barlabel=document.getElementById("barlabel");
+  var share=document.getElementById("share"),shareval=document.getElementById("shareval"),
+      fast=document.getElementById("fast"),fastval=document.getElementById("fastval"),
+      profiles=document.getElementById("profiles"),blended=document.getElementById("blended"),
+      choices=document.getElementById("choices"),depon=document.getElementById("depon"),
+      depfields=document.getElementById("depfields"),rows=document.getElementById("rows"),
+      result=document.getElementById("result"),state=document.getElementById("state"),
+      delta=document.getElementById("delta"),explain=document.getElementById("explain"),
+      bar=document.getElementById("bar"),barval=document.getElementById("barval"),
+      barlabel=document.getElementById("barlabel");
 
   function num(v){var n=parseFloat(String(v).replace(",","."));return isFinite(n)?n:0;}
   function fmt(n,d){return isFinite(n)?n.toLocaleString("pt-PT",
     {minimumFractionDigits:d,maximumFractionDigits:d}):"—";}
   function eur(n){return fmt(n,0)+" €";}
 
-  function normalise(changed){
-    var keys=["home","slow","fast"],v={};
-    keys.forEach(function(k){v[k]=Math.min(Math.max(parseInt(sh[k].value,10)||0,0),100);});
-    var others=keys.filter(function(k){return k!==changed;});
-    var rest=100-v[changed], cur=v[others[0]]+v[others[1]];
-    if(rest<0){v[changed]=100;rest=0;}
-    if(cur<=0){
-      v[others[0]]=Math.round(rest/2/5)*5; v[others[1]]=rest-v[others[0]];
-    }else{
-      var a=Math.round(rest*v[others[0]]/cur/5)*5;
-      a=Math.min(Math.max(a,0),rest);
-      v[others[0]]=a; v[others[1]]=rest-a;
-    }
-    keys.forEach(function(k){sh[k].value=v[k];});
-    return v;
-  }
-  function current(){
-    return {home:parseInt(sh.home.value,10)||0,
-            slow:parseInt(sh.slow.value,10)||0,
-            fast:parseInt(sh.fast.value,10)||0};
-  }
-
   function save(){try{
-    var o={dep:depon.checked,split:[sh.home.value,sh.slow.value,sh.fast.value].join(",")};
+    var o={share:share.value,fast:fast.value,dep:depon.checked};
     ids.forEach(function(i){o[i]=el[i].value;});
-    localStorage.setItem("ev-tco4",JSON.stringify(o));
+    localStorage.setItem("ev-tco5",JSON.stringify(o));
   }catch(e){}}
   function load(){try{
-    var raw=localStorage.getItem("ev-tco4");if(!raw)return;
+    var raw=localStorage.getItem("ev-tco5");if(!raw)return;
     var o=JSON.parse(raw);
     ids.forEach(function(i){if(typeof o[i]==="string"&&o[i]!=="")el[i].value=o[i];});
-    if(typeof o.split==="string"){
-      var a=o.split.split(",");
-      if(a.length===3){sh.home.value=a[0];sh.slow.value=a[1];sh.fast.value=a[2];}
-    }
+    if(o.share)share.value=o.share;
+    if(o.fast)fast.value=o.fast;
     if(typeof o.dep==="boolean")depon.checked=o.dep;
   }catch(e){}}
 
@@ -381,30 +331,24 @@ input:focus-visible,summary:focus-visible,button:focus-visible,a:focus-visible{
   }
 
   function render(){
-    var v=current(),tot=v.home+v.slow+v.fast||1;
-    ["home","slow","fast"].forEach(function(k){
-      vv[k].textContent=v[k]+"%";
-      seg[k].style.width=(v[k]/tot*100)+"%";
-    });
-
     var km=num(el.km.value),
         plug=num(el.cons.value)/(1-Math.min(Math.max(num(el.loss.value),0),60)/100),
-        mix=(v.home*num(el.phome.value)+v.slow*num(el.pslow.value)+
-             v.fast*num(el.pfast.value))/tot,
+        sh=num(share.value)/100,
+        fs=num(fast.value)/100,
+        pubPrice=(1-fs)*num(el.pslow.value)+fs*num(el.pfast.value),
+        mix=sh*num(el.phome.value)+(1-sh)*pubPrice,
         evEnergy=plug*mix*km/100,
         iceEnergy=num(el.lkm.value)*num(el.fuel.value)*km/100,
         dep=depon.checked,
         depEv=dep?num(el.pev.value)*(1-num(el.rev.value)/100)/3:0,
         depIce=dep?num(el.pice.value)*(1-num(el.rice.value)/100)/3:0;
 
+    shareval.textContent=Math.round(sh*100)+"% dos quilómetros em casa";
+    fastval.textContent=Math.round(fs*100)+"% dos carregamentos fora de casa são em rápido";
+    blended.innerHTML=Math.round(sh*100)+"% dos km em casa a "+fmt(num(el.phome.value),2)+
+      " €, "+Math.round((1-sh)*100)+"% fora de casa a "+fmt(pubPrice,2)+
+      " € dá <b>"+fmt(mix,3)+" € por kWh</b> em média, ou "+fmt(plug*mix,2)+" € por cada 100 km.";
     depfields.hidden=!dep;
-
-    var parts=[];
-    if(v.home)parts.push(v.home+"% em casa a "+fmt(num(el.phome.value),2)+" €");
-    if(v.slow)parts.push(v.slow+"% em lento a "+fmt(num(el.pslow.value),2)+" €");
-    if(v.fast)parts.push(v.fast+"% em rápido a "+fmt(num(el.pfast.value),2)+" €");
-    blended.innerHTML=parts.join(", ")+" dá <b>"+fmt(mix,3)+" € por kWh</b> em média, ou "+
-      fmt(plug*mix,2)+" € por cada 100 km.";
 
     var html="";
     if(dep)html+=row("Perda de valor",depEv,depIce,"dep");
@@ -422,29 +366,32 @@ input:focus-visible,summary:focus-visible,button:focus-visible,a:focus-visible{
     state.textContent=over?"O elétrico sai-te mais caro":"O elétrico sai-te mais barato";
     delta.innerHTML=eur(Math.abs(d))+' <span>por ano</span>';
     var per100=km>0?Math.abs(d)/km*100:0;
-    explain.textContent="São "+fmt(per100,2)+" € por cada 100 km"+
+    explain.textContent=(over?"São ":"São ")+fmt(per100,2)+" € por cada 100 km"+
       (dep?", já com a perda de valor incluída."
           :". A perda de valor do carro não está a contar — é a rubrica que costuma virar a resposta.");
+
     barlabel.textContent=over?"O elétrico fica mais caro":"O elétrico poupa";
     barval.textContent=eur(Math.abs(d))+"/ano";
     save();
   }
 
-  presets.addEventListener("click",function(e){
+  choices.addEventListener("click",function(e){
     var b=e.target.closest("button");if(!b)return;
-    Array.prototype.forEach.call(presets.children,function(x){x.setAttribute("aria-pressed","false");});
+    Array.prototype.forEach.call(choices.children,function(x){x.setAttribute("aria-pressed","false");});
     b.setAttribute("aria-pressed","true");
-    var a=b.dataset.split.split(",");
-    sh.home.value=a[0];sh.slow.value=a[1];sh.fast.value=a[2];
+    if(b.dataset.home)el.phome.value=b.dataset.home;
+    share.value=b.dataset.share;
     render();
   });
-  ["home","slow","fast"].forEach(function(k){
-    sh[k].addEventListener("input",function(){
-      normalise(k);
-      Array.prototype.forEach.call(presets.children,function(x){x.setAttribute("aria-pressed","false");});
-      render();
-    });
+  profiles.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;
+    Array.prototype.forEach.call(profiles.children,function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true");
+    fast.value=b.dataset.fast;
+    render();
   });
+  share.addEventListener("input",render);
+  fast.addEventListener("input",render);
   depon.addEventListener("change",render);
   ids.forEach(function(i){el[i].addEventListener("input",render);});
 
